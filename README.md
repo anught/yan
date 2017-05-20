@@ -1,4 +1,3 @@
-# yan
 #include<stdio.h>
 int main()
 {
