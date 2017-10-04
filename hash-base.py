@@ -3,7 +3,7 @@
 import hashlib
 import base64
 
-# in put svpgwdid + cid + 0x00
+# in put gwdid + cid + 0x00
 def hi3_auth(gwid,cid):
     auth = hashlib.sha512()
     auth.update((gwid + cid).ljust(256,'\0'))
