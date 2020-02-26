@@ -30,8 +30,16 @@ class  SafeTimedRotatingFileHandler (TimedRotatingFileHandler):
         dfn = self.rotation_filename(self.baseFilename + "." +
                                      time.strftime(self.suffix, timeTuple))
 
-        if os.path.exists(dfn) and os.path.exists(self.baseFilename):#changed
-            os.remove(self.baseFilename,dfn)
+        #if not os.path.exists(dfn) and os.path.exists(self.baseFilename):#changed 方式一
+        #    os.rename(self.baseFilename,dfn)#change
+
+        if not os.path.exists(dfn): #方式二
+            f = open(self.baseFilename, 'a')
+            fcntl.lockf(f.fileno(), fcntl.LOCK_EX)
+            if not os.path.exists(dfn):
+                os.rename(self.baseFilename, dfn)
+            # 释放锁 释放老 log 句柄
+            f.close()
 
         #self.rotate(self.baseFilename, dfn)
         if self.backupCount > 0:
